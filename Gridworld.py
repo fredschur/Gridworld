@@ -122,5 +122,5 @@ for episode in range(N_episodes):
             break
         state = state_next
     agent.epsilon = max(agent.epsilon * agent.epsilon_decay, 0.01)
-
+# agent.display_greedy_policy()
 env.display_path()
