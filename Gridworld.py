@@ -1,7 +1,7 @@
 import numpy as np
 import random
 
-class Environment:
+class Gridworld:
     def __init__(self, Ny=8, Nx=8, N_mountains=4, N_quicksands=4):
         self.Ny, self.Nx = Ny, Nx
         self.state_dim = (Ny, Nx)
@@ -11,7 +11,7 @@ class Environment:
         self.end_state = (Ny - 1, Nx - 1)
         self.mountains = self._generate_obstacles(N_mountains)
         self.quicksands = self._generate_obstacles(N_quicksands)
-        self.R = self._build_rewards()
+        self.R = self._reward_function()
         self.state = (0, 0)
         self.end_state = (Ny-1, Nx-1)
         self.path = []
@@ -41,7 +41,7 @@ class Environment:
         if x < self.Nx - 1 and (y, x + 1) not in self.mountains: actions_allowed.append(self.action_dict["right"])
         return np.array(actions_allowed, dtype=int)
 
-    def _build_rewards(self):
+    def _reward_function(self):
         R = -0.1 * np.ones(self.state_dim + self.action_dim, dtype=float)
         for qs in self.quicksands:
             for action in range(4):
@@ -98,16 +98,7 @@ class Agent:
         sa = state + (action,)
         self.Q[sa] += self.beta * (reward + self.gamma * np.max(self.Q[state_next]) - self.Q[sa])
 
-    def display_greedy_policy(self):
-        greedy_policy = np.zeros((self.state_dim[0], self.state_dim[1]), dtype=int)
-        for y in range(self.state_dim[0]):
-            for x in range(self.state_dim[1]):
-                greedy_policy[y, x] = np.argmax(self.Q[y, x, :])
-        print("\nGreedy policy (y, x):")
-        print(greedy_policy)
-        print()
-
-env = Environment()
+env = Gridworld()
 agent = Agent(env)
 
 print("\nTraining agent...\n")
@@ -122,5 +113,5 @@ for episode in range(N_episodes):
             break
         state = state_next
     agent.epsilon = max(agent.epsilon * agent.epsilon_decay, 0.01)
-# agent.display_greedy_policy()
+    
 env.display_path()
