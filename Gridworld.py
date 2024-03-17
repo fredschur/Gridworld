@@ -12,8 +12,7 @@ class Gridworld:
         self.mountains = self._generate_obstacles(N_mountains)
         self.quicksands = self._generate_obstacles(N_quicksands)
         self.R = self._reward_function()
-        self.state = (0, 0)
-        self.end_state = (Ny-1, Nx-1)
+        self.state = (0, 0)F
         self.path = []
 
     def reset(self):
