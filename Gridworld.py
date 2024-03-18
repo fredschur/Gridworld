@@ -2,7 +2,7 @@ import numpy as np
 import random
 
 class Gridworld:
-    def __init__(self, Ny=8, Nx=8, N_mountains=10, N_quicksands=10):
+    def __init__(self, Ny=8, Nx=8, N_mountains=6, N_quicksands=6):
         self.Ny, self.Nx = Ny, Nx
         self.state_dim = (Ny, Nx)
         self.action_dim = (4,) 
